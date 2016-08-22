@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Seattle Field Finder</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Vendor css -->
+    <link rel="stylesheet" href="/vendor/css/normalize.css">
+    <link rel="stylesheet" href="/vendor/css/fonts/font-awesome.min.css">
+    <link rel="stylesheet" href="/vendor/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/vendor/bootstrap/css/bootstrap.offcanvas.min.css">
+
+    <!-- Custom css -->
+    <link rel="stylesheet" href="/assets/css/base.css">
+    <link rel="stylesheet" href="/assets/css/layout.css">
+    <link rel="stylesheet" href="/assets/css/modules.css">
+  </head>
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <a type="button" class="navbar-toggle offcanvas-toggle" data-toggle="offcanvas" data-target="#js-bootstrap-offcanvas">
+            <span class="sr-only">Toggle navigation</span>
+            <span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </span>
+        </a>
+          <a class="navbar-brand" href="/">Steven Than's Mockup</a>
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="navbar-offcanvas navbar-offcanvas-touch navbar-offcanvas-right" id="js-bootstrap-offcanvas">
+        </div><!-- /.navbar-collapse -->
+      </div><!-- /.container-fluid -->
+    </nav>
+
+    <main id="content" class="container">
+      <a href="/" type="button" class="btn btn-info btn-arrow-left">Home</a>
+      <section id="journal-entry-form">
+        <form>
+          <div class="form-group">
+            <label for="title">Title</label>
+            <input type="email" class="form-control" id="title" placeholder="Journal title">
+          </div>
+          <div class="form-group">
+            <label for="entry">Entry</label>
+            <textarea class="form-control" rows="25" id="entry"></textarea>
+          </div>
+          <a href="/single-entry.html" class="btn btn-primary">Submit</a>
+        </form>
+      </section>
+    </main>
+
+    <!-- Vendor scripts -->
+    <script src="/vendor/js/jquery-2.2.4.min.js"></script>
+    <script src="/vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/vendor/bootstrap/js/bootstrap.offcanvas.min.js"></script>
+  </body>
+</html>
