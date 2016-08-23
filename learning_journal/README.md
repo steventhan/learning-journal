@@ -2,7 +2,7 @@ learning_journal - Steven
 
 Heroku URL:
 ```
-https://learning-jn.herokuapp.com/journal/12345
+https://learning-jn.herokuapp.com
 ```
 
 Usage:
