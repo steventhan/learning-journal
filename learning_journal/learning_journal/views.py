@@ -1,31 +1,32 @@
-from pyramid.response import Response 
-import os
-
-HERE = os.path.dirname(__file__)
+from pyramid.view import view_config
 
 
-def home_page(request):
-    imported_text = open(os.path.join(HERE + '/static/', 'index.html')).read()
-    return Response(imported_text)
+@view_config(
+    route_name='home', renderer='learning_journal:templates/home.html'
+)
+def home_view(request):
+    return {}
 
 
-def view_entry(request):
-    imported_text = open(os.path.join(HERE + '/static/', 'single-entry.html')).read()
-    return Response(imported_text)
-
-
+@view_config(
+    route_name='new-entry',
+    renderer='learning_journal:templates/new-entry.html'
+)
 def new_entry(request):
-    imported_text = open(os.path.join(HERE + '/static/', 'new-entry.html')).read()
-    return Response(imported_text)
+    return {}
 
 
+@view_config(
+    route_name='single-entry',
+    renderer='learning_journal:templates/single-entry.html'
+)
+def single_entry(request):
+    return {}
+
+
+@view_config(
+    route_name='edit-entry',
+    renderer='learning_journal:templates/edit-entry.html'
+)
 def edit_entry(request):
-    imported_text = open(os.path.join(HERE + '/static/', 'edit-entry.html')).read()
-    return Response(imported_text)
-
-
-def includeme(config):
-    config.add_view(home_page, route_name='home')
-    config.add_view(view_entry, route_name='single-entry')
-    config.add_view(new_entry, route_name='new-entry')
-    config.add_view(edit_entry, route_name='edit-entry')
+    return {}
