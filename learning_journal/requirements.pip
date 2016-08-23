@@ -1,5 +1,4 @@
 Jinja2==2.8
--e git+https://github.com/steventhan/learning-journal@6c1468664ceee55bc08079529c20b2fb0f3d95f6#egg=learning_journal&subdirectory=learning_journal
 Mako==1.0.4
 MarkupSafe==0.23
 PasteDeploy==1.5.2
