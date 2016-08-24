@@ -1,29 +1,54 @@
-import unittest
-
+import pytest
 from pyramid import testing
 
 
-class ViewTests(unittest.TestCase):
-    def setUp(self):
-        self.config = testing.setUp()
-
-    def tearDown(self):
-        testing.tearDown()
-
-    def test_my_view(self):
-        from .views import my_view
-        request = testing.DummyRequest()
-        info = my_view(request)
-        self.assertEqual(info['project'], 'learning_journal')
+def test_home_view():
+    from .views import home_view
+    request = testing.DummyRequest()
+    info = home_view(request)
+    assert info['title'] == 'Home'
 
 
-class FunctionalTests(unittest.TestCase):
-    def setUp(self):
-        from learning_journal import main
-        app = main({})
-        from webtest import TestApp
-        self.testapp = TestApp(app)
+def test_single_entry_view():
+    from .views import single_entry
+    request = testing.DummyRequest()
+    info = single_entry(request)
+    assert info['title'] == 'Single entry'
 
-    def test_root(self):
-        res = self.testapp.get('/', status=200)
-        self.assertTrue(b'Pyramid' in res.body)
+
+def test_new_entry_view():
+    from .views import new_entry
+    request = testing.DummyRequest()
+    info = new_entry(request)
+    assert info['title'] == 'New entry'
+
+
+def test_edit_entry_view():
+    from .views import edit_entry
+    request = testing.DummyRequest()
+    info = edit_entry(request)
+    assert info['title'] == 'Edit entry'
+
+
+def test_home(testapp):
+    response = testapp.get('/', status=200)
+    assert b"Steven Than's Mockup" in response.body
+
+
+def test_single_entry(testapp):
+    response = testapp.get('/journal/12345', status=200)
+    assert b'<h2 class="text-center">This is a blog title</h2>'\
+        in response.body
+
+
+def test_new_entry(testapp):
+    response = testapp.get('/new-entry', status=200)
+    assert b"<title>Steven's Learning Journal | New entry</title>"\
+        in response.body
+
+
+def test_edit_entry(testapp):
+    response = testapp.get('/journal/12345/edit-entry', status=200)
+    assert b'<input type="email" class="form-control" id="title" ' +\
+        b'placeholder="Journal title" value="This is a blog title">'\
+        in response.body
