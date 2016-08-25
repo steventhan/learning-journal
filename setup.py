@@ -12,6 +12,10 @@ requires = [
     'pyramid',
     'pyramid_jinja2',
     'pyramid_debugtoolbar',
+    'pyramid_tm',
+    'SQLAlchemy',
+    'transaction',
+    'zope.sqlalchemy',
     'waitress',
     ]
 
@@ -19,7 +23,7 @@ tests_require = [
     'WebTest >= 1.3.1',  # py3 compat
     'pytest',  # includes virtualenv
     'pytest-cov',
-    'tox'
+    'tox',
     ]
 
 setup(name='learning_journal',
@@ -35,7 +39,7 @@ setup(name='learning_journal',
       author='',
       author_email='',
       url='',
-      keywords='web pyramid pylons',
+      keywords='web wsgi bfg pylons pyramid',
       packages=find_packages(),
       include_package_data=True,
       zip_safe=False,
@@ -46,5 +50,7 @@ setup(name='learning_journal',
       entry_points="""\
       [paste.app_factory]
       main = learning_journal:main
+      [console_scripts]
+      init_db = learning_journal.scripts.initializedb:main
       """,
       )
