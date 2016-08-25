@@ -3,16 +3,24 @@ from sqlalchemy import (
     Index,
     Integer,
     Text,
+    UnicodeText,
+    Date
 )
 
 from .meta import Base
+import datetime
 
 
-class MyModel(Base):
-    __tablename__ = 'models'
+def _now():
+    return datetime.datetime.now()
+
+
+class Journal(Base):
+    __tablename__ = 'journals'
     id = Column(Integer, primary_key=True)
-    name = Column(Text)
-    value = Column(Integer)
+    title = Column(Text)
+    creation_date = Column(Date, default=_now)
+    body = Column(UnicodeText)
 
 
-Index('my_index', MyModel.name, unique=True, mysql_length=255)
+Index('my_index', Journal.title, unique=True, mysql_length=255)
