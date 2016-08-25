@@ -1,7 +1,13 @@
-# learning-journal
+learning_journal - Steven
 
-Instruction:
-Clone the repo to your local machine and use:
+Heroku URL:
 ```
-live-server or python -m SimpleHTTPServer
+https://learning-jn.herokuapp.com/journal/12345
+```
+
+Usage:
+Clone this repo, and `cd` into the `learning_journal` dir
+```
+1. pip install -e .
+2. pserve production.ini
 ```
