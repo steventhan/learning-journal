@@ -6,7 +6,9 @@ from pyramid.view import view_config
 )
 def home_view(request):
     """Render home.html at '/'"""
-    return {}
+    return {
+        'title': 'Home'
+    }
 
 
 @view_config(
@@ -15,7 +17,9 @@ def home_view(request):
 )
 def new_entry(request):
     """Render new-entry.html at '/new-entry'"""
-    return {}
+    return {
+        'title': 'New entry'
+    }
 
 
 @view_config(
@@ -24,7 +28,9 @@ def new_entry(request):
 )
 def single_entry(request):
     """Render single-entry.html at '/journal/12345'"""
-    return {}
+    return {
+        'title': 'Single entry'
+    }
 
 
 @view_config(
@@ -33,4 +39,6 @@ def single_entry(request):
 )
 def edit_entry(request):
     """Render edit-entry.html at '/journal/12345/edit-entry'"""
-    return {}
+    return {
+        'title': 'Edit entry'
+    }
