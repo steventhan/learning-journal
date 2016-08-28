@@ -13,3 +13,9 @@ STATEMENT:  INSERT INTO entries (title, creation_date, body) VALUES ('Test', '20
 ERROR:  duplicate key value violates unique constraint "my_index"
 DETAIL:  Key (title)=(Test) already exists.
 STATEMENT:  INSERT INTO entries (title, creation_date, body) VALUES ('Test', '2016-08-28T01:16:36.506412'::timestamp, 'test') RETURNING entries.id
+ERROR:  duplicate key value violates unique constraint "my_index"
+DETAIL:  Key (title)=(Test) already exists.
+STATEMENT:  INSERT INTO entries (title, creation_date, body) VALUES ('Test', '2016-08-28T13:06:38.210124'::timestamp, '<h1>Test</h1>') RETURNING entries.id
+ERROR:  duplicate key value violates unique constraint "my_index"
+DETAIL:  Key (title)=(Test) already exists.
+STATEMENT:  INSERT INTO entries (title, creation_date, body) VALUES ('Test', '2016-08-28T14:40:54.115193'::timestamp, '<h1>Test</h1>') RETURNING entries.id
