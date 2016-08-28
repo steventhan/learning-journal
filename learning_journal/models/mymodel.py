@@ -2,8 +2,8 @@ from sqlalchemy import (
     Column,
     Index,
     Integer,
-    Text,
     UnicodeText,
+    Unicode,
     Date
 )
 
@@ -15,12 +15,12 @@ def _now():
     return datetime.datetime.now()
 
 
-class Journal(Base):
-    __tablename__ = 'journals'
+class Entry(Base):
+    __tablename__ = 'entries'
     id = Column(Integer, primary_key=True)
-    title = Column(Text)
+    title = Column(Unicode)
     creation_date = Column(Date, default=_now)
     body = Column(UnicodeText)
 
 
-Index('my_index', Journal.title, unique=True, mysql_length=255)
+Index('my_index', Entry.title, unique=True, mysql_length=255)
