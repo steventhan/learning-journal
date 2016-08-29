@@ -27,6 +27,7 @@ tests_require = [
     'pytest',  # includes virtualenv
     'pytest-cov',
     'tox',
+    'webtest'
     ]
 
 setup(name='learning_journal',

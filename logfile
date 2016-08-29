@@ -21,3 +21,4 @@ DETAIL:  Key (title)=(Test) already exists.
 STATEMENT:  INSERT INTO entries (title, creation_date, body) VALUES ('Test', '2016-08-28T14:40:54.115193'::timestamp, '<h1>Test</h1>') RETURNING entries.id
 FATAL:  database ":memory:" does not exist
 FATAL:  database ":memory:" does not exist
+FATAL:  role "Steven" does not exist
