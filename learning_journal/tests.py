@@ -95,7 +95,6 @@ def test_home(testapp):
 
 def test_single_entry(testapp):
     response = testapp.get('/journal/1', status=200)
-    # import pdb; pdb.set_trace()
     assert b'<h2 class="text-center">Test</h2>'\
         in response.body
 
