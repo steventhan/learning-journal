@@ -8,11 +8,11 @@ from sqlalchemy import (
 )
 
 from .meta import Base
-import datetime
+from datetime import datetime
 
 
 def _now():
-    return datetime.datetime.now()
+    return datetime.now()
 
 
 class Entry(Base):

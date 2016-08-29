@@ -1,65 +1,112 @@
-import unittest
+import pytest
+from pyramid import testing
+from .models import (
+        Entry,
+        get_engine,
+        get_session_factory,
+        get_tm_session
+)
+from .models.meta import Base
 import transaction
 
-from pyramid import testing
 
+@pytest.fixture(scope="session")
+def sqlengine(request):
+    config = testing.setUp(settings={
+        'sqlalchemy.url': 'sqlite:///:memory:'
+    })
+    config.include(".models")
+    settings = config.get_settings()
+    engine = get_engine(settings)
+    Base.metadata.create_all(engine)
 
-def dummy_request(dbsession):
-    return testing.DummyRequest(dbsession=dbsession)
-
-
-class BaseTest(unittest.TestCase):
-    def setUp(self):
-        self.config = testing.setUp(settings={
-            'sqlalchemy.url': 'sqlite:///:memory:'
-        })
-        self.config.include('.models')
-        settings = self.config.get_settings()
-
-        from .models import (
-            get_engine,
-            get_session_factory,
-            get_tm_session,
-            )
-
-        self.engine = get_engine(settings)
-        session_factory = get_session_factory(self.engine)
-
-        self.session = get_tm_session(session_factory, transaction.manager)
-
-    def init_database(self):
-        from .models.meta import Base
-        Base.metadata.create_all(self.engine)
-
-    def tearDown(self):
-        from .models.meta import Base
-
+    def teardown():
         testing.tearDown()
         transaction.abort()
-        Base.metadata.drop_all(self.engine)
+        Base.metadata.drop_all(engine)
+
+    request.addfinalizer(teardown)
+    return engine
 
 
-class TestMyViewSuccessCondition(BaseTest):
+@pytest.fixture(scope="function")
+def new_session(sqlengine, request):
+    session_factory = get_session_factory(sqlengine)
+    session = get_tm_session(session_factory, transaction.manager)
 
-    def setUp(self):
-        super(TestMyViewSuccessCondition, self).setUp()
-        self.init_database()
+    def teardown():
+        transaction.abort()
 
-        from .models import MyModel
-
-        model = MyModel(name='one', value=55)
-        self.session.add(model)
-
-    def test_passing_view(self):
-        from .views.default import my_view
-        info = my_view(dummy_request(self.session))
-        self.assertEqual(info['one'].name, 'one')
-        self.assertEqual(info['project'], 'learning_journal')
+    request.addfinalizer(teardown)
+    return session
 
 
-class TestMyViewFailureCondition(BaseTest):
+def test_entry_model(new_session):
+    assert len(new_session.query(Entry).all()) == 0
+    test_entry = Entry(title='Test entry', body='test body')
+    new_session.add(test_entry)
+    new_session.flush()
+    assert len(new_session.query(Entry).all()) == 1
 
-    def test_failing_view(self):
-        from .views.default import my_view
-        info = my_view(dummy_request(self.session))
-        self.assertEqual(info.status_int, 500)
+
+def dummy_http_request(new_session):
+    test_request = testing.DummyRequest()
+    test_request.dbsession = new_session
+    return test_request
+
+
+def test_home_view(new_session):
+    from .views.default import home_view
+    new_session.add(Entry(title='Pytest', body='<h1>This is a pytest</h1>'))
+    new_session.flush()
+    http_request = dummy_http_request(new_session)
+    result = home_view(http_request)
+    assert result['journal_entries'][-1].title == 'Pytest'
+
+
+def test_single_entry_view(new_session):
+    from .views.default import single_entry
+    new_session.add(Entry(title='Pytest', body='<h1>This is a pytest</h1>'))
+    new_session.flush()
+    http_request = dummy_http_request(new_session) 
+    http_request.matchdict['id'] = 1
+    result = single_entry(http_request)
+    assert result['journal'].title == 'Pytest'
+
+
+# def test_new_entry_view():
+    # from .views.default  import new_entry
+    # request = testing.DummyRequest()
+    # info = new_entry(request)
+    # assert info['title'] == 'New entry'
+
+
+# def test_edit_entry_view():
+    # from .views.default import edit_entry
+    # request = testing.DummyRequest()
+    # info = edit_entry(request)
+    # assert info['title'] == 'Edit entry'
+
+
+# def test_home(testapp):
+    # response = testapp.get('/', status=200)
+    # assert b"Steven Than's Mockup" in response.body
+
+
+# def test_single_entry(testapp):
+    # response = testapp.get('/journal/12345', status=200)
+    # assert b'<h2 class="text-center">This is a blog title</h2>'\
+        # in response.body
+
+
+# def test_new_entry(testapp):
+    # response = testapp.get('/new-entry', status=200)
+    # assert b"<title>Steven's Learning Journal | New entry</title>"\
+        # in response.body
+
+
+# def test_edit_entry(testapp):
+    # response = testapp.get('/journal/12345/edit-entry', status=200)
+    # assert b'<input type="email" class="form-control" id="title" ' +\
+        # b'placeholder="Journal title" value="This is a blog title">'\
+        # in response.body
