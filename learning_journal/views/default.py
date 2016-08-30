@@ -1,5 +1,5 @@
 from pyramid.view import view_config
-
+from pyramid.httpexceptions import HTTPFound
 from ..models import Entry
 
 
@@ -8,11 +8,6 @@ from ..models import Entry
 )
 def home_view(request):
     """Render home.html at '/'"""
-    if request.method == 'POST':
-        title = request.POST['title']
-        body = request.POST['body']
-        new_entry = Entry(title=title, body=body)
-        request.dbsession.add(new_entry)
     journal_entries = request.dbsession.query(Entry).order_by(
             Entry.creation_date.desc()
     ).all()
@@ -28,8 +23,21 @@ def home_view(request):
 )
 def new_entry(request):
     """Render new-entry.html at '/new-entry'"""
+    title = body = error = ''
+    if request.method == 'POST':
+        title = request.params.get('title', '')
+        body = request.params.get('body', '')
+        if not title or not body:
+            error = 'Title and body are required'
+        else:
+            new_entry = Entry(title=title, body=body)
+            request.dbsession.add(new_entry)
+            return HTTPFound(location=request.route_url('home'))
     return {
-        'title': 'New entry'
+        'title': 'New entry',
+        'entry_title': title,
+        'body': body,
+        'error': error
     }
 
 
