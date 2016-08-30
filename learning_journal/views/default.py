@@ -13,9 +13,7 @@ def home_view(request):
         body = request.POST['body']
         new_entry = Entry(title=title, body=body)
         request.dbsession.add(new_entry)
-    journal_entries = request.dbsession.query(Entry).order_by(
-            Entry.creation_date.desc()
-    ).all()
+    journal_entries = request.dbsession.query(Entry).all()
     return {
         'title': 'Home',
         'journal_entries': journal_entries
