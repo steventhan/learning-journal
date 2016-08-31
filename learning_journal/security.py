@@ -1,4 +1,5 @@
 import os
+from passlib.apps import custom_app_context as pwd_context
 from pyramid.authentication import AuthTktAuthenticationPolicy
 from pyramid.authorization import ACLAuthorizationPolicy
 from pyramid.security import Allow, Authenticated, Everyone
@@ -27,3 +28,19 @@ class AppRoot(object):
         (Allow, Everyone, 'view'),
         (Allow, Authenticated, 'modify')
     ]
+
+
+def check_credentials(username, password):
+    stored_username = os.environ.get('AUTH_USERNAME', '')
+    stored_password = os.environ.get('AUTH_PASSWORD', '')
+    print(stored_username, stored_password)
+    is_authenticated = False
+    if stored_username and stored_password:
+        if username == stored_username:
+            try:
+                is_authenticated = pwd_context.verify(
+                        password, stored_password
+                )
+            except ValueError:
+                pass
+    return is_authenticated

@@ -1,13 +1,13 @@
 from pyramid.view import view_config
 from pyramid.httpexceptions import HTTPFound
+from pyramid.security import remember, forget
 from ..models import Entry
-from pyramid.security import NO_PERMISSION_REQUIRED
+from ..security import check_credentials
 
 
 @view_config(
     route_name='home',
     renderer='learning_journal:templates/home.html',
-    permission=NO_PERMISSION_REQUIRED
 )
 def home_view(request):
     """Render home.html at '/'"""
@@ -22,7 +22,8 @@ def home_view(request):
 
 @view_config(
     route_name='new-entry',
-    renderer='learning_journal:templates/new-entry.html'
+    renderer='learning_journal:templates/new-entry.html',
+    permission='modify'
 )
 def new_entry(request):
     """Render new-entry.html at '/new-entry'"""
@@ -61,10 +62,38 @@ def single_entry(request):
 
 @view_config(
     route_name='edit-entry',
-    renderer='learning_journal:templates/edit-entry.html'
+    renderer='learning_journal:templates/edit-entry.html',
+    permission='modify'
 )
 def edit_entry(request):
     """Render edit-entry.html at '/journal/12345/edit-entry'"""
     return {
         'title': 'Edit entry'
     }
+
+
+@view_config(
+    route_name='login',
+    renderer='../templates/login.html'
+)
+def login(request):
+    error = ''
+    if request.method == 'POST':
+        username = request.params.get('username', '')
+        password = request.params.get('password', '')
+        print(username, password, check_credentials(username, password))
+        if check_credentials(username, password):
+            headers = remember(request, username)
+            return HTTPFound(
+                location=request.route_url('home'),
+                headers=headers
+            )
+        else:
+            error = 'Unsuccessful, try again'
+    return {'error': error}
+
+
+@view_config(route_name='logout')
+def logout(request):
+    headers = forget(request)
+    return HTTPFound(request.route_url('home'), headers=headers)
