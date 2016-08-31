@@ -1,6 +1,7 @@
 import os
 from pyramid.authentication import AuthTktAuthenticationPolicy
 from pyramid.authorization import ACLAuthorizationPolicy
+from pyramid.security import Allow, Authenticated, Everyone
 
 
 def includeme(config):
@@ -14,3 +15,15 @@ def includeme(config):
     authz_policy = ACLAuthorizationPolicy()
     config.set_authorization_policy(authz_policy)
     config.set_default_permission('view')
+    config.set_root_factory(AppRoot)
+
+
+class AppRoot(object):
+
+    def __init__(self, request):
+        self.request = request
+
+    __acl__ = [
+        (Allow, Everyone, 'view'),
+        (Allow, Authenticated, 'modify')
+    ]
