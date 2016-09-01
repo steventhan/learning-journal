@@ -6,16 +6,16 @@
 <main id="content" class="container">
   <a href="/" type="button" class="btn btn-info btn-arrow-left">Home</a>
   <section id="journal-entry-form">
-    <form action="{{ request.route_url('home') }}" method="POST">
+    <form>
       <div class="form-group">
         <label for="title">Title</label>
-        <input type="text" class="form-control" id="title" placeholder="Journal title" name="title">
+        <input type="email" class="form-control" id="title" placeholder="Journal title">
       </div>
       <div class="form-group">
         <label for="entry">Entry</label>
-        <textarea name="body" class="form-control" rows="25" id="entry"></textarea>
+        <textarea class="form-control" rows="25" id="entry"></textarea>
       </div>
-      <button type="submit" class="btn btn-primary">Submit</button>
+      <a href="/single-entry" class="btn btn-primary">Submit</a>
     </form>
   </section>
 </main>

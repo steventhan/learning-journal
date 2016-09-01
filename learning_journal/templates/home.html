@@ -2,7 +2,6 @@
 
 {% extends "base.html" %}
 {% block body %}
-
 <main id="content" class="container">
   <section class="row">
     <div class="col-xs-12">
@@ -12,33 +11,20 @@
     </div>
   </section>
   <section id="journals" class="row">
+    {% for journal in journal_entries %}
     <div class="journal">
       <div class="col-xs-12">
-      <h2><a href="/journal/12345">This is a blog title</a></h2>
-      <h4>Date created: 08/20/2016</h4>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed eget porttitor ex. Nulla ornare fermentum lorem vitae sollicitudin. Pellentesque eget consectetur urna, condimentum faucibus magna. Sed ut massa commodo, convallis augue eu, ullamcorper diam. Donec nec tortor arcu. Donec euismod neque nec nunc fringilla condimentum. Phasellus fringilla est hendrerit velit venenatis, id bibendum risus imperdiet. Nunc consectetur dictum sem, ut sodales orci molestie sit amet. In feugiat, est eu pharetra lobortis, mauris mauris fringilla mi, sed pulvinar ligula odio eu quam. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Ut tincidunt vestibulum turpis, tempus aliquet lorem rutrum eu. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Quisque faucibus dui vitae ex vulputate mollis. Nulla maximus tortor in tortor hendrerit vehicula. Vivamus tortor massa, venenatis ac ultricies a...</p>
+      <h2><a href="/journal/{{ journal.id }}">{{journal.title}}</a></h2>
+      <h4>Date created: {{ journal.creation_date }}</h4>
+      {{ journal.body | safe }}
       </div>
     </div>
+    {% endfor %}
+
 
     <div class="journal">
       <div class="col-xs-12">
-        <h2><a href="/journal/12346">This is a blog title</a></h2>
-        <h4>Date created: 08/20/2016</h4>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed eget porttitor ex. Nulla ornare fermentum lorem vitae sollicitudin. Pellentesque eget consectetur urna, condimentum faucibus magna. Sed ut massa commodo, convallis augue eu, ullamcorper diam. Donec nec tortor arcu. Donec euismod neque nec nunc fringilla condimentum. Phasellus fringilla est hendrerit velit venenatis, id bibendum risus imperdiet. Nunc consectetur dictum sem, ut sodales orci molestie sit amet. In feugiat, est eu pharetra lobortis, mauris mauris fringilla mi, sed pulvinar ligula odio eu quam. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Ut tincidunt vestibulum turpis, tempus aliquet lorem rutrum eu. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Quisque faucibus dui vitae ex vulputate mollis. Nulla maximus tortor in tortor hendrerit vehicula. Vivamus tortor massa, venenatis ac ultricies a...</p>
-      </div>
-    </div>
-
-    <div class="journal">
-      <div class="col-xs-12">
-        <h2><a href="/journal/12347">This is a blog title</a></h2>
-        <h4>Date created: 08/20/2016</h4>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed eget porttitor ex. Nulla ornare fermentum lorem vitae sollicitudin. Pellentesque eget consectetur urna, condimentum faucibus magna. Sed ut massa commodo, convallis augue eu, ullamcorper diam. Donec nec tortor arcu. Donec euismod neque nec nunc fringilla condimentum. Phasellus fringilla est hendrerit velit venenatis, id bibendum risus imperdiet. Nunc consectetur dictum sem, ut sodales orci molestie sit amet. In feugiat, est eu pharetra lobortis, mauris mauris fringilla mi, sed pulvinar ligula odio eu quam. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Ut tincidunt vestibulum turpis, tempus aliquet lorem rutrum eu. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Quisque faucibus dui vitae ex vulputate mollis. Nulla maximus tortor in tortor hendrerit vehicula. Vivamus tortor massa, venenatis ac ultricies a...</p>
-      </div>
-    </div>
-
-    <div class="journal">
-      <div class="col-xs-12">
-        <h2><a href="/journal/12348">This is a blog title</a></h2>
+        <h2><a href="/journal/12348">This is a example entry</a></h2>
         <h4>Date created: 08/20/2016</h4>
         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed eget porttitor ex. Nulla ornare fermentum lorem vitae sollicitudin. Pellentesque eget consectetur urna, condimentum faucibus magna. Sed ut massa commodo, convallis augue eu, ullamcorper diam. Donec nec tortor arcu. Donec euismod neque nec nunc fringilla condimentum. Phasellus fringilla est hendrerit velit venenatis, id bibendum risus imperdiet. Nunc consectetur dictum sem, ut sodales orci molestie sit amet. In feugiat, est eu pharetra lobortis, mauris mauris fringilla mi, sed pulvinar ligula odio eu quam. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Ut tincidunt vestibulum turpis, tempus aliquet lorem rutrum eu. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Quisque faucibus dui vitae ex vulputate mollis. Nulla maximus tortor in tortor hendrerit vehicula. Vivamus tortor massa, venenatis ac ultricies a...</p>
       </div>
