@@ -1,0 +1,24 @@
+LOG:  database system was shut down at 2016-08-28 00:09:45 PDT
+LOG:  MultiXact member wraparound protections are now enabled
+LOG:  database system is ready to accept connections
+LOG:  autovacuum launcher started
+FATAL:  database "steven" does not exist
+FATAL:  database "learning_journal" does not exist
+FATAL:  database "learning_journal" does not exist
+FATAL:  database "learning_journal" does not exist
+ERROR:  duplicate key value violates unique constraint "my_index"
+DETAIL:  Key (title)=(Test) already exists.
+STATEMENT:  INSERT INTO entries (title, creation_date, body) VALUES ('Test', '2016-08-28T01:14:37.383173'::timestamp, 'another test
+	') RETURNING entries.id
+ERROR:  duplicate key value violates unique constraint "my_index"
+DETAIL:  Key (title)=(Test) already exists.
+STATEMENT:  INSERT INTO entries (title, creation_date, body) VALUES ('Test', '2016-08-28T01:16:36.506412'::timestamp, 'test') RETURNING entries.id
+ERROR:  duplicate key value violates unique constraint "my_index"
+DETAIL:  Key (title)=(Test) already exists.
+STATEMENT:  INSERT INTO entries (title, creation_date, body) VALUES ('Test', '2016-08-28T13:06:38.210124'::timestamp, '<h1>Test</h1>') RETURNING entries.id
+ERROR:  duplicate key value violates unique constraint "my_index"
+DETAIL:  Key (title)=(Test) already exists.
+STATEMENT:  INSERT INTO entries (title, creation_date, body) VALUES ('Test', '2016-08-28T14:40:54.115193'::timestamp, '<h1>Test</h1>') RETURNING entries.id
+FATAL:  database ":memory:" does not exist
+FATAL:  database ":memory:" does not exist
+FATAL:  role "Steven" does not exist

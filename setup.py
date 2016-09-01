@@ -13,6 +13,9 @@ requires = [
     'pyramid_jinja2',
     'pyramid_debugtoolbar',
     'pyramid_tm',
+    'ipython',
+    'pyramid_ipython',
+    'psycopg2',
     'SQLAlchemy',
     'transaction',
     'zope.sqlalchemy',
@@ -24,6 +27,7 @@ tests_require = [
     'pytest',  # includes virtualenv
     'pytest-cov',
     'tox',
+    'webtest'
     ]
 
 setup(name='learning_journal',

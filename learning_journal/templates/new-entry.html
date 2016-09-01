@@ -1,12 +1,16 @@
-<!-- templates/home.html -->
-
 {% extends "base.html" %}
 {% block body %}
+{% if error != '' %}
 
+<div class="alert alert-danger">
+  <strong>Error!</strong> {{ error }}
+</div>
+
+{% endif %}
 <main id="content" class="container">
   <a href="/" type="button" class="btn btn-info btn-arrow-left">Home</a>
   <section id="journal-entry-form">
-    <form action="{{ request.route_url('home') }}" method="POST">
+    <form action="{{ request.route_url('new-entry') }}" method="POST">
       <div class="form-group">
         <label for="title">Title</label>
         <input type="text" class="form-control" id="title" placeholder="Journal title" name="title">

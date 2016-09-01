@@ -1,19 +1,6 @@
-from pyramid.response import Response
 from pyramid.view import view_config
-
-from sqlalchemy.exc import DBAPIError
-
-from ..models import Journal
-
-
-# @view_config(route_name='default', renderer='../templates/mytemplate.jinja2')
-# def my_view(request):
-#     try:
-#         query = request.dbsession.query(Journal)
-#         journal = query.filter(Journal.title == 'Test').first()
-#     except DBAPIError:
-#         return Response(db_err_msg, content_type='text/plain', status=500)
-#     return {'title': journal.title, 'project': 'learning_journal'}
+from pyramid.httpexceptions import HTTPFound
+from ..models import Entry
 
 
 @view_config(
@@ -21,15 +8,9 @@ from ..models import Journal
 )
 def home_view(request):
     """Render home.html at '/'"""
-    if request.method == 'POST':
-        title = request.POST['title']
-        body = request.POST['body']
-        new_entry = Journal(title=title, body=body)
-        request.dbsession.add(new_entry)
-    try:
-        journal_entries = request.dbsession.query(Journal).all()
-    except DBAPIError:
-        return Response(db_err_msg, content_type='text/plain', status=500)
+    journal_entries = request.dbsession.query(Entry).order_by(
+            Entry.creation_date.desc()
+    ).all()
     return {
         'title': 'Home',
         'journal_entries': journal_entries
@@ -42,8 +23,21 @@ def home_view(request):
 )
 def new_entry(request):
     """Render new-entry.html at '/new-entry'"""
+    title = body = error = ''
+    if request.method == 'POST':
+        title = request.params.get('title', '')
+        body = request.params.get('body', '')
+        if not title or not body:
+            error = 'Title and body are required'
+        else:
+            new_entry = Entry(title=title, body=body)
+            request.dbsession.add(new_entry)
+            return HTTPFound(location=request.route_url('home'))
     return {
-        'title': 'New entry'
+        'title': 'New entry',
+        'entry_title': title,
+        'body': body,
+        'error': error
     }
 
 
@@ -53,12 +47,9 @@ def new_entry(request):
 )
 def single_entry(request):
     """Render single entry at '/journal/{id}'"""
-    try:
-        journal = request.dbsession.query(Journal).filter_by(
-            id=request.matchdict['id']
-        ).first()
-    except:
-        return Response(db_err_msg, content_type='text/plain', status=500)
+    journal = request.dbsession.query(Entry).filter_by(
+        id=request.matchdict['id']
+    ).first()
     return {
         'title': 'Single entry',
         'journal': journal
@@ -74,20 +65,3 @@ def edit_entry(request):
     return {
         'title': 'Edit entry'
     }
-
-
-db_err_msg = """\
-Pyramid is having a problem using your SQL database.  The problem
-might be caused by one of the following things:
-
-1.  You may need to run the "initialize_learning_journal_db" script
-    to initialize your database tables.  Check your virtual
-    environment's "bin" directory for this script and try to run it.
-
-2.  Your database server may not be running.  Check that the
-    database server referred to by the "sqlalchemy.url" setting in
-    your "development.ini" file is running.
-
-After you fix the problem, please restart the Pyramid application to
-try it again.
-"""
