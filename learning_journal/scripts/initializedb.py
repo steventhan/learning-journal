@@ -34,8 +34,8 @@ def main(argv=sys.argv):
     settings = get_appsettings(config_uri, options=options)
     engine = get_engine(settings)
     Base.metadata.create_all(engine)
-    # session_factory = get_session_factory(engine)
-#     with transaction.manager:
-        # dbsession = get_tm_session(session_factory, transaction.manager)
-        # model = Entry(title='Test', body='<h1>Test</h1>')
-        # dbsession.add(model)
+    session_factory = get_session_factory(engine)
+    with transaction.manager:
+        dbsession = get_tm_session(session_factory, transaction.manager)
+        model = Entry(title='Test', body='<h1>Test</h1>')
+        dbsession.add(model)
