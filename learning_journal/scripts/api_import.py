@@ -27,6 +27,7 @@ def save_entries_to_db(entries):
                 creation_date=entry['created']
             ))
             session.commit()
+    session.close()
 
 
 def main():
@@ -34,3 +35,4 @@ def main():
     path = '/api/export'
     api_key = os.environ['API_KEY']
     save_entries_to_db(get_data(domain, path, api_key))
+    print('Entries imported.')
