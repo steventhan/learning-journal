@@ -15,7 +15,6 @@ def home_view(request):
             Entry.creation_date.desc()
     ).all()
     return {
-        'title': 'Home',
         'journal_entries': journal_entries
     }
 
@@ -38,7 +37,6 @@ def new_entry(request):
             request.dbsession.add(new_entry)
             return HTTPFound(location=request.route_url('home'))
     return {
-        'title': 'New entry',
         'entry_title': title,
         'body': body,
         'error': error
@@ -55,7 +53,6 @@ def single_entry(request):
         id=request.matchdict['id']
     ).first()
     return {
-        'title': 'Single entry',
         'journal': journal
     }
 
@@ -66,9 +63,23 @@ def single_entry(request):
     permission='modify'
 )
 def edit_entry(request):
-    """Render edit-entry.html at '/journal/12345/edit-entry'"""
+    """Render edit-entry.html.'"""
+    entry = request.dbsession.query(Entry).filter_by(
+        id=request.matchdict['id']
+    ).first()
+    error = ''
+    if request.method == 'POST':
+        title = request.params.get('title', '')
+        body = request.params.get('body', '')
+        if not title or not body:
+            error = 'Title and body are required'
+        else:
+            entry.title = title
+            entry.body = body
+            return HTTPFound(location=request.route_url('home'))
     return {
-        'title': 'Edit entry'
+        'entry': entry,
+        'error': error,
     }
 
 
@@ -81,7 +92,6 @@ def login(request):
     if request.method == 'POST':
         username = request.params.get('username', '')
         password = request.params.get('password', '')
-        print(username, password, check_credentials(username, password))
         if check_credentials(username, password):
             headers = remember(request, username)
             return HTTPFound(

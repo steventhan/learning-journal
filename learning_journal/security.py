@@ -31,8 +31,8 @@ class AppRoot(object):
 
 
 def check_credentials(username, password):
-    stored_username = os.environ.get('AUTH_USERNAME', '')
-    stored_password = os.environ.get('AUTH_PASSWORD', '')
+    stored_username = os.environ['AUTH_USERNAME']
+    stored_password = os.environ['AUTH_PASSWORD']
     is_authenticated = False
     if stored_username and stored_password:
         if username == stored_username:
