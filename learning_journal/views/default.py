@@ -63,8 +63,24 @@ def single_entry(request):
     permission='modify'
 )
 def edit_entry(request):
-    """Render edit-entry.html at '/journal/12345/edit-entry'"""
-    return {}
+    """Render edit-entry.html.'"""
+    entry = request.dbsession.query(Entry).filter_by(
+        id=request.matchdict['id']
+    ).first()
+    error = ''
+    if request.method == 'POST':
+        title = request.params.get('title', '')
+        body = request.params.get('body', '')
+        if not title or not body:
+            error = 'Title and body are required'
+        else:
+            entry.title = title
+            entry.body = body
+            return HTTPFound(location=request.route_url('home'))
+    return {
+        'entry': entry,
+        'error': error,
+    }
 
 
 @view_config(

@@ -12,29 +12,38 @@
 <main id="content" class="container">
   <a href="/" type="button" class="btn btn-info btn-arrow-left">Home</a>
   <br>
-  <section id="journal-entry-form">
-    <form>
+  <section>
+    <form id="journal-entry-form" action="{{ request.route_url('edit-entry', id=entry.id) }}" method="POST">
       <div class="form-group">
         <label for="title">Title</label>
-        <input type="email" class="form-control" id="title" placeholder="Journal title" value="This is a blog title">
+        <input type="text" class="form-control" id="title" placeholder="Entry title" value="{{ entry.title }}" name="title">
       </div>
       <div class="form-group">
         <label for="entry">Entry</label>
-        <textarea class="form-control" rows="25" id="entry"><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed eget porttitor ex. Nulla ornare fermentum lorem vitae sollicitudin. Pellentesque eget consectetur urna, condimentum faucibus magna. Sed ut massa commodo, convallis augue eu, ullamcorper diam. Donec nec tortor arcu. Donec euismod neque nec nunc fringilla condimentum. Phasellus fringilla est hendrerit velit venenatis, id bibendum risus imperdiet. Nunc consectetur dictum sem, ut sodales orci molestie sit amet. In feugiat, est eu pharetra lobortis, mauris mauris fringilla mi, sed pulvinar ligula odio eu quam. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Ut tincidunt vestibulum turpis, tempus aliquet lorem rutrum eu. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Quisque faucibus dui vitae ex vulputate mollis. Nulla maximus tortor in tortor hendrerit vehicula. Vivamus tortor massa, venenatis ac ultricies a.</p>
-        <p>Donec sed ultrices nisl. Morbi tincidunt bibendum augue, eget maximus nunc tincidunt gravida. Vestibulum non sodales nisi, eu pretium odio. Sed consequat mauris mauris, sit amet auctor felis elementum auctor. Curabitur lobortis posuere sagittis. Nulla non sapien accumsan, tristique lorem eu, sollicitudin libero. Sed et nulla molestie, commodo mi sed, viverra lectus. Aliquam libero neque, egestas eget erat nec, maximus fermentum mauris. Vestibulum scelerisque aliquet pulvinar. Mauris euismod enim nec velit congue tristique.</p>
-        <p>Nunc cursus tellus id est pellentesque, vel imperdiet tellus porttitor. Vestibulum volutpat arcu consectetur consequat efficitur. Quisque molestie porttitor tempus. Donec nec nulla et diam iaculis lacinia a eget neque. Integer luctus nunc vitae sagittis efficitur. Quisque tincidunt, magna sollicitudin ullamcorper scelerisque, augue turpis sodales nulla, vel pulvinar quam turpis in dui. Fusce malesuada pretium sapien. Aenean luctus bibendum elit, ut sollicitudin est fringilla et. Nunc rhoncus pulvinar massa ut laoreet. Nulla in mauris eu lorem elementum dapibus. Cras sit amet nulla ligula.</p>
-        <p>Sed ornare purus velit. Aenean sagittis, risus id pulvinar iaculis, velit enim elementum velit, in consequat purus velit sit amet ipsum. Etiam et risus eros. Donec venenatis orci nec sodales pretium. Ut convallis varius ante, id rhoncus neque varius vitae. In pellentesque lacinia commodo. Nunc vel turpis sed ligula tristique cursus.</p>
-        <p>Sed bibendum metus lectus, id tempus est molestie eu. Cras vitae purus est. Nulla condimentum commodo magna, at maximus dolor posuere eu. Aliquam aliquet nibh non pellentesque aliquet. Donec hendrerit lectus rhoncus elementum tincidunt. Phasellus molestie et odio ut consectetur. Quisque arcu urna, vestibulum maximus lectus et, feugiat blandit orci. Nullam dapibus est justo, vel blandit augue tristique id. Quisque mollis ante sit amet porta auctor. Donec vel ex odio. Fusce elit augue, ornare fringilla facilisis in, luctus vel odio. Vivamus maximus metus lacus, at dignissim nunc facilisis gravida. Aenean fermentum fringilla efficitur. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Interdum et malesuada fames ac ante ipsum primis in faucibus. Proin maximus eget metus id accumsan.</p>
-        <p>Praesent interdum sed elit eu varius. Ut lorem eros, convallis ut lacus et, fringilla efficitur tellus. Curabitur in mi vel tortor laoreet rutrum. Maecenas mollis massa ut neque pharetra posuere. Donec a nunc tincidunt, laoreet ipsum nec, vestibulum quam. Nam mollis, mauris non vehicula dignissim, mi massa posuere risus, posuere commodo leo urna vitae risus. Morbi mollis nunc non lorem mollis, quis facilisis urna cursus. Quisque rutrum risus efficitur mauris vulputate faucibus. Nam congue purus quam, eget fringilla lectus elementum eget. Quisque nunc purus, varius ut malesuada vel, congue sed eros. Pellentesque ornare bibendum consectetur. Morbi luctus efficitur ante quis venenatis. Proin cursus mollis orci nec tristique. Aenean elementum lorem et libero suscipit, a efficitur est consequat. Morbi sodales vestibulum tortor, id pretium diam.</p></textarea>
+        <textarea name="body" class="form-control" rows="25" id="entry">{{ entry.body }}</textarea>
       </div>
-      <a href="/journal/12345" class="btn btn-primary">Save</a>
-      <a class="btn btn-danger">Delete</a>
+      <button id="journal-entry-submit-button" type="submit" class="btn btn-primary">Save</button>
     </form>
   </section>
 </main>
 
 {% endblock %}
 
-{% block js %} 
-
+{% block js %}
+<script>
+  $(document).ready(function() {
+    $('#journal-entry-submit-button').click(function(e) {
+      e.preventDefault();
+      $.ajax({
+        type: "POST",
+        url: window.location.path,
+        data: $('#journal-entry-form').serialize(),
+      }).done(function(){
+        alert('Entry saved!');
+      }).fail(function() {
+        alert('Something went wrong');
+      });
+    });
+  });
+</script>
 {% endblock %}

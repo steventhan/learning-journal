@@ -34,10 +34,12 @@
       console.log();
       $.ajax({
         type: "POST",
-        url: '/new-entry',
+        url: window.location.path,
         data: $('#journal-entry-form').serialize(),
       }).done(function(){
         alert('New entry saved!');
+      }).fail(function() {
+        alert('Something is wrong');
       });
     });
   });
