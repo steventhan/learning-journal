@@ -21,6 +21,7 @@ requires = [
     'zope.sqlalchemy',
     'waitress',
     'passlib',
+    'requests'
     ]
 
 tests_require = [
@@ -57,5 +58,6 @@ setup(name='learning_journal',
       main = learning_journal:main
       [console_scripts]
       init_db = learning_journal.scripts.initializedb:main
+      api_import = learning_journal.scripts.import_from_class_lj:main
       """,
       )

@@ -21,6 +21,3 @@ class Entry(Base):
     title = Column(Unicode)
     creation_date = Column(Date, default=_now)
     body = Column(UnicodeText)
-
-
-Index('my_index', Entry.title, unique=True, mysql_length=255)

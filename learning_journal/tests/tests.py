@@ -1,12 +1,12 @@
 import pytest
 from pyramid import testing
-from .models import (
+from learning_journal.models import (
         Entry,
         get_engine,
         get_session_factory,
         get_tm_session
 )
-from .models.meta import Base
+from learning_journal.models.meta import Base
 import transaction
 
 
@@ -68,7 +68,7 @@ def test_single_entry_view(new_session):
     from .views.default import single_entry
     new_session.add(Entry(title='Pytest', body='<h1>This is a pytest</h1>'))
     new_session.flush()
-    http_request = dummy_http_request(new_session) 
+    http_request = dummy_http_request(new_session)
     http_request.matchdict['id'] = 1
     result = single_entry(http_request)
     assert result['journal'].title == 'Pytest'
