@@ -3,19 +3,19 @@
   <main id="content" class="container">
     <a href="/" type="button" class="btn btn-info btn-arrow-left">Home</a>
     <section id="single-journal" class="row">
-      <h3 class="text-center">{{ journal.title }}</h3>
+      <h3 class="text-center">{{ entry.title }}</h3>
       <div class="col-sm-6">
-        <a class="btn btn-primary" href="/journal/{{ journal.id }}/edit-entry">Edit</a>
+        <a class="btn btn-primary" href="{{ request.route_url('edit-entry', id=entry.id) }}">Edit</a>
         <a href="https://twitter.com/share" class="twitter-share-button" data-show-count="false">Tweet</a><script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
         <a class="btn btn-danger" href="#">Delete</a>
       </div>
       <div class="col-sm-6">
-        <h5 class="text-right"><i class="fa fa-clock-o" aria-hidden="true"></i> {{ journal.creation_date }}</h5>
+        <h5 class="text-right"><i class="fa fa-clock-o" aria-hidden="true"></i> {{ entry.creation_date }}</h5>
       </div>
       <br>
       <br>
       <div class="col-sm-12">
-        {{ journal.body | safe }}
+        {{ entry.body | safe }}
       </div>
     </section>
   </main>

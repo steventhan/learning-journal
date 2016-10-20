@@ -48,12 +48,12 @@ def new_entry(request):
     renderer='learning_journal:templates/single-entry.html'
 )
 def single_entry(request):
-    """Render single entry at '/journal/{id}'"""
-    journal = request.dbsession.query(Entry).filter_by(
+    """Render single entry at '/entry/{id}'"""
+    entry = request.dbsession.query(Entry).filter_by(
         id=request.matchdict['id']
     ).first()
     return {
-        'journal': journal
+        'entry': entry
     }
 
 
