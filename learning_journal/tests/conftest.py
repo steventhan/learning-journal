@@ -52,6 +52,13 @@ def new_session(sqlengine, request):
 @pytest.fixture()
 def testapp():
     from learning_journal import main
-    app = main({})
+    app = main(DB_SETTINGS)
     from webtest import TestApp
     return TestApp(app)
+
+
+@pytest.fixture()
+def dummy_http_request(new_session):
+    test_request = testing.DummyRequest()
+    test_request.dbsession = new_session
+    return test_request
