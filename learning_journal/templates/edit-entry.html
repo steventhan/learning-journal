@@ -14,6 +14,7 @@
   <br>
   <section>
     <form id="journal-entry-form" action="{{ request.route_url('edit-entry', id=entry.id) }}" method="POST">
+      <input type="hidden" name="csrf_token" value="{{ request.session.get_csrf_token() }}" />
       <div class="form-group">
         <label for="title">Title</label>
         <input type="text" class="form-control" id="title" placeholder="Entry title" value="{{ entry.title }}" name="title">
@@ -34,9 +35,11 @@
   $(document).ready(function() {
     $('#journal-entry-submit-button').click(function(e) {
       e.preventDefault();
+      var csrfToken = "{{request.session.get_csrf_token()}}";
       $.ajax({
         type: "POST",
         url: window.location.path,
+        headers: { 'X-CSRF-Token': csrfToken },
         data: $('#journal-entry-form').serialize(),
       }).done(function(){
         alert('Entry saved!');
