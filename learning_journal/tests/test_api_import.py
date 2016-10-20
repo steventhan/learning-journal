@@ -72,4 +72,5 @@ def test_save_entries_to_db(new_session, setup_test_env):
     initial_entry_count = new_session.query(Entry).count()
     api_import.save_entries_to_db(FAKE_API_RESPONSE)
     after_entry_count = new_session.query(Entry).count()
+    new_session.flush()
     assert after_entry_count == initial_entry_count + 2

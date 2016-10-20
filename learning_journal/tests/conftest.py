@@ -20,7 +20,7 @@ def setup_test_env():
     os.environ['DATABASE_URL'] = DB_SETTINGS['sqlalchemy.url']
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture(scope='function')
 def sqlengine(request):
     config = testing.setUp(settings=DB_SETTINGS)
     config.include("learning_journal.models")
