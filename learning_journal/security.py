@@ -3,11 +3,12 @@ from passlib.apps import custom_app_context as pwd_context
 from pyramid.authentication import AuthTktAuthenticationPolicy
 from pyramid.authorization import ACLAuthorizationPolicy
 from pyramid.security import Allow, Authenticated, Everyone
+from pyramid.session import SignedCookieSessionFactory
 
 
 def includeme(config):
     """Security configuration"""
-    auth_secret = os.environ.get('AUTH_SECRET', 'randomstring')
+    auth_secret = os.environ['AUTH_SECRET']
     authn_policy = AuthTktAuthenticationPolicy(
             secret=auth_secret,
             hashalg='sha512'
@@ -17,6 +18,9 @@ def includeme(config):
     config.set_authorization_policy(authz_policy)
     config.set_default_permission('view')
     config.set_root_factory(AppRoot)
+    session_factory = SignedCookieSessionFactory(auth_secret)
+    config.set_session_factory(session_factory)
+    config.set_default_csrf_options(require_csrf=True)
 
 
 class AppRoot(object):
